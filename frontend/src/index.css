@@ -1,38 +1,50 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-primary: #2E7D32;
+  --color-accent: #1B5E20;
+  --color-bg: #F5F5F5;
+  --color-border: #A5D6A7;
+  --color-focus: #4ADE80;
+  --color-card-border: #DCEDC8;
+  --color-shadow: rgba(34, 197, 94, 0.15);
+
+  font-family: 'Open Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: var(--color-primary);
+  background-color: var(--color-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  color: var(--color-accent);
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+a {
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-accent);
 }
 
 button {
@@ -42,31 +54,72 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-primary);
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s, border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: var(--color-accent);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  width: 100%;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+input:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  outline: none;
+}
+
+/* Cards and containers */
+.card {
+  background-color: #fff;
+  border: 1px solid var(--color-card-border);
+  border-radius: 12px;
+  padding: 1.5em;
+  box-shadow: 0 4px 20px var(--color-shadow);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Light mode overrides */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: var(--color-primary);
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: var(--color-accent);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #A5D6A7;
+    color: var(--color-accent);
   }
-}
-body {
-  background: #fff !important;
-  color: #111 !important;
 }
