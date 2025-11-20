@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, LogIn } from 'lucide-react'
 
-function Login({ onLogin }) {
+function LoginPage({ onLogin, onShowRegister }) {
   const [user, setUser] = useState('')
   const [pass, setPass] = useState('')
   const [msg, setMsg] = useState('')
@@ -156,6 +156,17 @@ function Login({ onLogin }) {
           </AnimatePresence>
         </form>
 
+        {/* Botón para registro */}
+        <div className="mt-8 text-center">
+          <button
+            type="button"
+            onClick={onShowRegister}
+            className="font-semibold text-emerald-600 hover:text-emerald-900 underline transition-colors"
+          >
+            Crear cuenta
+          </button>
+        </div>
+
         {/* Footer */}
         <footer className="text-xs text-gray-500 text-center border-t border-emerald-100 pt-8 mt-14 leading-relaxed">
           © 2025{' '}
@@ -168,4 +179,4 @@ function Login({ onLogin }) {
   )
 }
 
-export default Login
+export default LoginPage

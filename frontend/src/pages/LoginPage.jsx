@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, LogIn } from "lucide-react";
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Eye, EyeOff, LogIn } from 'lucide-react'
 
-function LoginPage({ onLogin }) {
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
-  const [msg, setMsg] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+function LoginPage({ onLogin, onShowRegister }) {
+  const [user, setUser] = useState("")
+  const [pass, setPass] = useState("")
+  const [msg, setMsg] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
-  const isValidEmail = user.match(/^.+@.+\..+$/);
+  const isValidEmail = user.match(/^.+@.+\..+$/)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,8 +30,8 @@ function LoginPage({ onLogin }) {
         setTimeout(() => setMsg(""), 4000);
       }
     } catch (error) {
-      console.error("Error de conexión:", error);
       setMsg("No se pudo conectar con el servidor");
+      console.error("Error de conexión:", error);
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,6 @@ function LoginPage({ onLogin }) {
         transition={{ duration: 1.2 }}
         className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#a7f3d0,_transparent_40%),_radial-gradient(circle_at_bottom_right,_#6ee7b7,_transparent_40%)] animate-pulse"
       />
-
       {/* Contenedor principal */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
@@ -64,16 +63,10 @@ function LoginPage({ onLogin }) {
           ⚡ RayoSalud
         </motion.h1>
 
-        {/* Subtítulo */}
-        <p className="text-center text-gray-500 mt-3 mb-8 font-medium tracking-wide">
-          
-        </p>
-
         <h2 className="text-2xl font-semibold text-emerald-700 mb-6 text-center">
           Acceso a la plataforma. Inicia sesión para continuar ⤵
         </h2>
 
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-7">
           {/* Correo */}
           <motion.div
@@ -105,7 +98,7 @@ function LoginPage({ onLogin }) {
             )}
           </motion.div>
 
-          {/* Contraseña más corta */}
+          {/* Contraseña */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -118,8 +111,6 @@ function LoginPage({ onLogin }) {
             >
               Contraseña 🔐
             </label>
-
-            {/* Contenedor centrado más corto */}
             <div className="flex items-center w-4/5 border border-emerald-300 rounded-lg focus-within:ring-2 focus-within:ring-emerald-400 shadow-sm bg-white">
               <input
                 id="password"
@@ -186,12 +177,13 @@ function LoginPage({ onLogin }) {
             <a href="#" className="block hover:text-emerald-600 hover:underline">
               ¿Olvidaste tu contraseña?
             </a>
-            <a
-              href="#"
-              className="block font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
+            <button
+              type="button"
+              onClick={onShowRegister}
+              className="block font-semibold text-emerald-600 hover:text-emerald-700 hover:underline w-full px-2 py-1"
             >
               Crear cuenta
-            </a>
+            </button>
             <div className="h-8" />
           </div>
         </form>
@@ -207,4 +199,4 @@ function LoginPage({ onLogin }) {
   );
 }
 
-export default LoginPage;
+export default LoginPage

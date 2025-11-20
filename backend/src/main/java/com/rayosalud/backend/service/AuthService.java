@@ -1,36 +1,42 @@
 package com.rayosalud.backend.service;
 
 import com.rayosalud.backend.model.User;
-import com.rayosalud.backend.repository.UserRepository;
-import com.rayosalud.backend.exception.UnauthorizedException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    // Lista en memoria
+    private final List<User> users = new CopyOnWriteArrayList<>();
 
+    // Agrega usuario (registro)
+    public boolean register(User user) {
+        boolean emailExists = users.stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(user.getEmail()));
+        boolean usernameExists = users.stream()
+                .anyMatch(u -> u.getUsername().equalsIgnoreCase(user.getUsername()));
+
+        if (emailExists || usernameExists) {
+            return false; // Usuario duplicado
+        }
+        users.add(user);
+        return true;
+    }
+
+    // Autenticación simple (email y password)
     public User authenticate(String email, String password) {
-        Optional<User> userOpt = userRepository.findByEmail(email);
+        return users.stream()
+                .filter(user -> user.getEmail().equalsIgnoreCase(email)
+                        && user.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
 
-        if (userOpt.isEmpty()) {
-            throw new UnauthorizedException("Credenciales inválidas");
-        }
-
-        User user = userOpt.get();
-
-        if (!user.getActivo()) {
-            throw new UnauthorizedException("Usuario inactivo");
-        }
-
-        if (!user.getPassword().equals(password)) {
-            throw new UnauthorizedException("Credenciales inválidas");
-        }
-
-        return user;
+    // (Opcional) Puedes añadir getUserList para pruebas
+    public List<User> getUsers() {
+        return users;
     }
 }

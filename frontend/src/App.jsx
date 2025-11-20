@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Facebook, Instagram, Twitter, Stethoscope, HeartPulse } from 'lucide-react'
+import { Facebook, Instagram, Twitter, HeartPulse } from 'lucide-react'
 import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 // Sidebar elegante y expresivo
 function Sidebar() {
@@ -19,7 +20,6 @@ function Sidebar() {
         <p className="text-emerald-700 text-base italic font-medium leading-snug">
           Síguenos para conocer nuestras últimas novedades y consejos de salud.
         </p>
-
         <div className="flex flex-col gap-3 mt-6 text-emerald-800 font-medium text-sm">
           {[
             { name: 'Facebook', url: 'https://facebook.com/rayosalud', icon: <Facebook size={18} /> },
@@ -39,9 +39,7 @@ function Sidebar() {
           ))}
         </div>
       </motion.div>
-
       <div className="border-t border-emerald-300/60 my-8"></div>
-
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -72,16 +70,13 @@ function WelcomePanel() {
     'Has iniciado sesión correctamente. ✅',
     '🩻 Accede a tus estudios, resultados y servicios médicos en un solo lugar.',
   ]
-
   const [index, setIndex] = useState(0)
-
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % phrases.length)
     }, 4000)
     return () => clearInterval(interval)
   }, [])
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -101,7 +96,6 @@ function WelcomePanel() {
           {phrases[index]}
         </motion.h1>
       </AnimatePresence>
-
       <motion.div
         key={`box-${index}`}
         initial={{ opacity: 0, scale: 0.95 }}
@@ -117,11 +111,9 @@ function WelcomePanel() {
         >
           <HeartPulse size={52} className="text-emerald-600" />
         </motion.div>
-
         <p className="text-emerald-800 font-semibold leading-relaxed text-lg mb-6">
           {phrases[(index + 1) % phrases.length]}
         </p>
-
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
@@ -134,15 +126,47 @@ function WelcomePanel() {
   )
 }
 
-// App principal con nuevo fondo dinámico
+// App principal con navegación Login/Register
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
+
+  const handleLogin = () => setIsAuthenticated(true)
+  const handleRegisterSuccess = () => setShowRegister(false)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-emerald-100 flex flex-col md:flex-row font-sans">
       <main className="flex-1 flex items-center justify-center px-6 py-12">
         {!isAuthenticated ? (
-          <LoginPage onLogin={() => setIsAuthenticated(true)} />
+          <AnimatePresence mode="wait">
+            {!showRegister ? (
+              <motion.div
+                key="login"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <LoginPage
+                  onLogin={handleLogin}
+                  onShowRegister={() => setShowRegister(true)}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="register"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <RegisterPage
+                  onRegister={handleRegisterSuccess}
+                  onBackToLogin={() => setShowRegister(false)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         ) : (
           <WelcomePanel />
         )}
