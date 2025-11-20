@@ -3,17 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Facebook, Instagram, Twitter, HeartPulse } from 'lucide-react'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import CatalogoPage from './pages/CatalogoPage'
 
-// Sidebar elegante y expresivo
 function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col justify-between w-80 px-8 py-12 mt-12 mb-12 rounded-2xl shadow-2xl backdrop-blur-2xl bg-gradient-to-b from-emerald-100/80 via-white/40 to-cyan-50/70 border border-emerald-200/60">
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center"
-      >
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center">
         <h2 className="text-3xl font-extrabold text-emerald-800 mb-4 drop-shadow-md tracking-tight">
           Conecta con nosotros
         </h2>
@@ -26,36 +21,18 @@ function Sidebar() {
             { name: 'Instagram', url: 'https://instagram.com/rayosalud', icon: <Instagram size={18} /> },
             { name: 'X (Twitter)', url: 'https://x.com/rayosalud', icon: <Twitter size={18} /> },
           ].map((link) => (
-            <motion.a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.07, color: '#047857' }}
-              className="flex items-center gap-2 hover:text-emerald-900 transition-all duration-300"
-            >
+            <motion.a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.07, color: '#047857' }} className="flex items-center gap-2 hover:text-emerald-900 transition-all duration-300">
               <span className="text-emerald-600">{link.icon}</span> {link.name}
             </motion.a>
           ))}
         </div>
       </motion.div>
       <div className="border-t border-emerald-300/60 my-8"></div>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="text-center text-base text-emerald-900 leading-relaxed font-medium"
-      >
-        <p className="font-semibold text-emerald-800 mb-3 text-lg">
-          Contáctanos 💬
-        </p>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-center text-base text-emerald-900 leading-relaxed font-medium">
+        <p className="font-semibold text-emerald-800 mb-3 text-lg">Contáctanos 💬</p>
         <p>📞 +52 800 123 4567</p>
         <p>✉️ contacto@rayosalud.com</p>
-        <motion.p
-          animate={{ opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="text-sm text-emerald-600 mt-4 italic font-semibold"
-        >
+        <motion.p animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 3, repeat: Infinity }} className="text-sm text-emerald-600 mt-4 italic font-semibold">
           Tu salud, en buenas manos 🌿
         </motion.p>
       </motion.div>
@@ -63,8 +40,7 @@ function Sidebar() {
   )
 }
 
-// Panel de bienvenida mejorado visualmente
-function WelcomePanel() {
+function WelcomePanel({ onIrPanel }) {
   const phrases = [
     '✨ ¡Bienvenido a RayoSalud! ✨',
     'Has iniciado sesión correctamente. ✅',
@@ -78,61 +54,64 @@ function WelcomePanel() {
     return () => clearInterval(interval)
   }, [])
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="max-w-lg w-full text-center flex flex-col items-center"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-lg w-full text-center flex flex-col items-center">
       <AnimatePresence mode="wait">
-        <motion.h1
-          key={index}
-          initial={{ opacity: 0, y: 15, filter: 'blur(6px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-black text-emerald-900 mb-8 tracking-tight drop-shadow-lg"
-        >
+        <motion.h1 key={index} initial={{ opacity: 0, y: 15, filter: 'blur(6px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }} transition={{ duration: 0.8 }} className="text-4xl md:text-5xl font-black text-emerald-900 mb-8 tracking-tight drop-shadow-lg">
           {phrases[index]}
         </motion.h1>
       </AnimatePresence>
-      <motion.div
-        key={`box-${index}`}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="bg-gradient-to-br from-emerald-50 to-cyan-50 border border-emerald-200 rounded-3xl p-8 shadow-xl backdrop-blur-lg hover:shadow-emerald-300/70 transition-all duration-400"
-      >
-        <motion.div
-          initial={{ rotate: -10, opacity: 0 }}
-          animate={{ rotate: 0, opacity: 1 }}
-          transition={{ duration: 0.7 }}
-          className="flex justify-center mb-5"
-        >
+      <motion.div key={`box-${index}`} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="bg-gradient-to-br from-emerald-50 to-cyan-50 border border-emerald-200 rounded-3xl p-8 shadow-xl">
+        <motion.div initial={{ rotate: -10, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} transition={{ duration: 0.7 }} className="flex justify-center mb-5">
           <HeartPulse size={52} className="text-emerald-600" />
         </motion.div>
-        <p className="text-emerald-800 font-semibold leading-relaxed text-lg mb-6">
-          {phrases[(index + 1) % phrases.length]}
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
-          className="px-7 py-3 rounded-full bg-gradient-to-r from-emerald-600 to-cyan-500 text-white font-bold text-lg shadow-lg hover:shadow-cyan-400/40 transition-all duration-300"
-        >
+        <p className="text-emerald-800 font-semibold leading-relaxed text-lg mb-6">{phrases[(index + 1) % phrases.length]}</p>
+        <button className="px-7 py-3 rounded-full bg-gradient-to-r from-emerald-600 to-cyan-500 text-white font-bold text-lg shadow-lg hover:shadow-cyan-400/40 transition-all duration-300" onClick={onIrPanel}>
           Ir al panel principal →
-        </motion.button>
+        </button>
       </motion.div>
     </motion.div>
   )
 }
 
-// App principal con navegación Login/Register
+function PrincipalPanel({ onGoCatalogo, onGoAdmin, onCerrarSesion }) {
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-lg w-full text-center flex flex-col items-center">
+      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="text-3xl font-black text-emerald-900 mb-8 tracking-tight drop-shadow-lg">
+        Panel principal
+      </motion.h2>
+      <div className="flex flex-col md:flex-row gap-4 justify-center mb-6">
+        <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold text-lg shadow hover:bg-emerald-700 transition-all" onClick={onGoCatalogo}>
+          Catálogo de estudios
+        </button>
+        <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-lg shadow hover:bg-cyan-700 transition-all" onClick={onGoAdmin}>
+          Panel administrativo
+        </button>
+        <button className="px-6 py-3 rounded-lg bg-gray-200 text-emerald-800 font-bold text-lg shadow hover:bg-gray-300 transition-all" onClick={onCerrarSesion}>
+          Regresar al login
+        </button>
+      </div>
+      <p className="text-emerald-700 font-medium">
+        Selecciona una opción o cierra sesión para regresar al login.
+      </p>
+    </motion.div>
+  )
+}
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [enPanelPrincipal, setEnPanelPrincipal] = useState(false)
+  const [ruta, setRuta] = useState('') // '', 'catalogo', 'admin'
 
-  const handleLogin = () => setIsAuthenticated(true)
-  const handleRegisterSuccess = () => setShowRegister(false)
+  const handleCerrarSesion = () => {
+    setIsAuthenticated(false)
+    setShowRegister(false)
+    setEnPanelPrincipal(false)
+    setRuta('')
+  }
+  const handleGoCatalogo = () => setRuta('catalogo')
+  const handleGoAdmin = () => setRuta('admin')
+  const handleRegresarPanel = () => setRuta('')
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-100 via-white to-emerald-100 flex flex-col md:flex-row font-sans">
@@ -140,35 +119,23 @@ function App() {
         {!isAuthenticated ? (
           <AnimatePresence mode="wait">
             {!showRegister ? (
-              <motion.div
-                key="login"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <LoginPage
-                  onLogin={handleLogin}
-                  onShowRegister={() => setShowRegister(true)}
-                />
+              <motion.div key="login" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.3 }}>
+                <LoginPage onLogin={() => setIsAuthenticated(true)} onShowRegister={() => setShowRegister(true)} />
               </motion.div>
             ) : (
-              <motion.div
-                key="register"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <RegisterPage
-                  onRegister={handleRegisterSuccess}
-                  onBackToLogin={() => setShowRegister(false)}
-                />
+              <motion.div key="register" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}>
+                <RegisterPage onRegister={() => setShowRegister(false)} onBackToLogin={() => setShowRegister(false)} />
               </motion.div>
             )}
           </AnimatePresence>
+        ) : ruta === 'catalogo' ? (
+          <CatalogoPage onRegresar={handleRegresarPanel} />
+        ) : ruta === 'admin' ? (
+          <PrincipalPanel onGoCatalogo={handleGoCatalogo} onGoAdmin={() => alert('Próximamente')} onCerrarSesion={handleCerrarSesion} />
+        ) : enPanelPrincipal ? (
+          <PrincipalPanel onGoCatalogo={handleGoCatalogo} onGoAdmin={handleGoAdmin} onCerrarSesion={handleCerrarSesion} />
         ) : (
-          <WelcomePanel />
+          <WelcomePanel onIrPanel={() => setEnPanelPrincipal(true)} />
         )}
       </main>
       <Sidebar />
