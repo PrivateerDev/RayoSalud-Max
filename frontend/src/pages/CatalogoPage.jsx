@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle } from 'lucide-react'
+import { CarritoContext } from '../context/CarritoContext'
 
-// Datos del catálogo: radiográficos y clínicos separados
 const radiograficos = [
   { id: 1, nombre: "Radiografía de tórax", descripcion: "Imagen detallada del área pulmonar, corazón y cavidad torácica.", precio: 650, warning: "Evita este examen durante el embarazo. Si tienes marcapasos o dispositivos internos, informa a tu médico." },
   { id: 2, nombre: "Radiografía de columna", descripcion: "Estudio de vértebras, disco intervertebral y alineación.", precio: 780, warning: "Las mujeres embarazadas deben evitarlo salvo que sea estrictamente necesario." },
@@ -18,9 +18,59 @@ const clinicos = [
 
 export default function CatalogoPage({ onRegresar }) {
   const [selected, setSelected] = useState(null)
+  const { agregarAlCarrito } = useContext(CarritoContext)
+  const [mensaje, setMensaje] = useState('')
+
+  function handleAgregar(e, ev) {
+    ev.stopPropagation()
+    agregarAlCarrito(e)
+    setMensaje('¡Agregado al carrito!')
+    setTimeout(() => setMensaje(''), 1500)
+  }
+
+  function renderEstudioCard(e, color) {
+    return (
+      <motion.div
+        key={e.id}
+        whileHover={{ scale: 1.04, boxShadow: color === "cyan" ? "0 2px 32px #0ea5e9" : "0 2px 32px #38d399" }}
+        className={`cursor-pointer border ${color === "cyan" ? "border-cyan-200 bg-gradient-to-br from-cyan-50 to-emerald-50" : "border-emerald-200 bg-gradient-to-br from-emerald-50 to-cyan-50"} rounded-xl p-6 shadow-md transition flex flex-col`}
+        onClick={() => setSelected(e)}
+      >
+        <h4 className={`text-lg font-black ${color === "cyan" ? "text-emerald-900" : "text-cyan-900"} mb-2`}>{e.nombre}</h4>
+        <p className={`${color === "cyan" ? "text-emerald-700" : "text-cyan-700"} mb-2 font-medium`}>{e.descripcion}</p>
+        <div className="flex justify-between items-center mt-auto pt-2">
+          <span className={`text-base font-bold ${color === "cyan" ? "text-cyan-800 bg-cyan-100" : "text-emerald-800 bg-emerald-100"} rounded px-2 py-1 shadow w-fit`}>
+            ${e.precio} MXN
+          </span>
+          <span className={`inline-flex items-center gap-1 ${color === "cyan" ? "text-red-600" : "text-orange-500"} text-sm font-bold`}>
+            <AlertTriangle className="w-5 h-5" />
+            Advertencia
+          </span>
+        </div>
+        <button
+          className="mt-4 px-3 py-2 rounded-lg bg-emerald-500 text-white font-bold text-sm hover:bg-emerald-700 transition"
+          onClick={ev => handleAgregar(e, ev)}
+        >
+          Agregar al carrito
+        </button>
+      </motion.div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-10 px-2 bg-gradient-to-br from-cyan-100 to-emerald-50">
+      <AnimatePresence>
+        {mensaje && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-7 right-7 px-5 py-2 bg-emerald-600 text-white font-bold rounded-xl shadow-lg z-50">
+            {mensaje}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -40,70 +90,27 @@ export default function CatalogoPage({ onRegresar }) {
             Catálogo de estudios
           </h2>
         </div>
-        
         {/* Radiografías */}
         <div className="mb-10">
           <h3 className="text-2xl md:text-3xl font-black text-cyan-700 border-b-2 border-cyan-300 pb-2 mb-4">
             Estudios Radiográficos
           </h3>
           <div className="grid gap-8 md:grid-cols-2">
-            {radiograficos.map((e) => (
-              <motion.div
-                key={e.id}
-                whileHover={{ scale: 1.04, boxShadow: "0 2px 32px #0ea5e9" }}
-                className="cursor-pointer border border-cyan-200 bg-gradient-to-br from-cyan-50 to-emerald-50 rounded-xl p-6 shadow-md hover:shadow-cyan-400/60 transition flex flex-col"
-                onClick={() => setSelected(e)}
-              >
-                <h4 className="text-lg font-black text-emerald-900 mb-2">{e.nombre}</h4>
-                <p className="text-emerald-700 mb-2 font-medium">{e.descripcion}</p>
-                <div className="flex justify-between items-center mt-auto pt-2">
-                  <span className="text-base font-bold text-cyan-800 bg-cyan-100 rounded px-2 py-1 shadow w-fit">
-                    ${e.precio} MXN
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-red-600 text-sm font-bold">
-                    <AlertTriangle className="w-5 h-5" />
-                    Advertencia
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            {radiograficos.map(e => renderEstudioCard(e, "cyan"))}
           </div>
         </div>
-
-        {/* Separación Grande: Estudios clínicos */}
+        {/* Separación: Estudios clínicos */}
         <div className="my-8 w-full flex items-center justify-center">
           <span className="px-9 py-2 rounded-xl bg-emerald-200 font-black text-emerald-700 text-2xl shadow border border-emerald-300">
             Estudios clínicos
           </span>
         </div>
-
-        {/* Estudios clínicos */}
         <div>
           <div className="grid gap-8 md:grid-cols-2">
-            {clinicos.map((e) => (
-              <motion.div
-                key={e.id}
-                whileHover={{ scale: 1.04, boxShadow: "0 2px 32px #38d399" }}
-                className="cursor-pointer border border-emerald-200 bg-gradient-to-br from-emerald-50 to-cyan-50 rounded-xl p-6 shadow-md hover:shadow-emerald-300 transition flex flex-col"
-                onClick={() => setSelected(e)}
-              >
-                <h4 className="text-lg font-black text-cyan-900 mb-2">{e.nombre}</h4>
-                <p className="text-cyan-700 mb-2 font-medium">{e.descripcion}</p>
-                <div className="flex justify-between items-center mt-auto pt-2">
-                  <span className="text-base font-bold text-emerald-800 bg-emerald-100 rounded px-2 py-1 shadow w-fit">
-                    ${e.precio} MXN
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-orange-500 text-sm font-bold">
-                    <AlertTriangle className="w-5 h-5" />
-                    Advertencia
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            {clinicos.map(e => renderEstudioCard(e, "emerald"))}
           </div>
         </div>
-
-        {/* MODAL emergente centrado con detalles */}
+        {/* Modal emergente para detalles */}
         <AnimatePresence>
           {selected && (
             <motion.div

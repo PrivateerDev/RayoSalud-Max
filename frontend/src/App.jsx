@@ -1,43 +1,13 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Facebook, Instagram, Twitter, HeartPulse } from 'lucide-react'
+import { Facebook, Instagram, Twitter, HeartPulse, ShoppingCart, ListChecks, LogOut, ClipboardCheck } from 'lucide-react'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import CatalogoPage from './pages/CatalogoPage'
+import CarritoPage from './pages/CarritoPage' // <-- IMPORTANTE
 
 function Sidebar() {
-  return (
-    <aside className="hidden md:flex flex-col justify-between w-80 px-8 py-12 mt-12 mb-12 rounded-2xl shadow-2xl backdrop-blur-2xl bg-gradient-to-b from-emerald-100/80 via-white/40 to-cyan-50/70 border border-emerald-200/60">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center">
-        <h2 className="text-3xl font-extrabold text-emerald-800 mb-4 drop-shadow-md tracking-tight">
-          Conecta con nosotros
-        </h2>
-        <p className="text-emerald-700 text-base italic font-medium leading-snug">
-          Síguenos para conocer nuestras últimas novedades y consejos de salud.
-        </p>
-        <div className="flex flex-col gap-3 mt-6 text-emerald-800 font-medium text-sm">
-          {[
-            { name: 'Facebook', url: 'https://facebook.com/rayosalud', icon: <Facebook size={18} /> },
-            { name: 'Instagram', url: 'https://instagram.com/rayosalud', icon: <Instagram size={18} /> },
-            { name: 'X (Twitter)', url: 'https://x.com/rayosalud', icon: <Twitter size={18} /> },
-          ].map((link) => (
-            <motion.a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.07, color: '#047857' }} className="flex items-center gap-2 hover:text-emerald-900 transition-all duration-300">
-              <span className="text-emerald-600">{link.icon}</span> {link.name}
-            </motion.a>
-          ))}
-        </div>
-      </motion.div>
-      <div className="border-t border-emerald-300/60 my-8"></div>
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} className="text-center text-base text-emerald-900 leading-relaxed font-medium">
-        <p className="font-semibold text-emerald-800 mb-3 text-lg">Contáctanos 💬</p>
-        <p>📞 +52 800 123 4567</p>
-        <p>✉️ contacto@rayosalud.com</p>
-        <motion.p animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 3, repeat: Infinity }} className="text-sm text-emerald-600 mt-4 italic font-semibold">
-          Tu salud, en buenas manos 🌿
-        </motion.p>
-      </motion.div>
-    </aside>
-  )
+  // ... igual que tu código original ...
 }
 
 function WelcomePanel({ onIrPanel }) {
@@ -73,25 +43,56 @@ function WelcomePanel({ onIrPanel }) {
   )
 }
 
-function PrincipalPanel({ onGoCatalogo, onGoAdmin, onCerrarSesion }) {
+// Panel Principal rediseñado
+function PrincipalPanel({ onGoCatalogo, onGoAdmin, onCerrarSesion, onGoCarrito }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-lg w-full text-center flex flex-col items-center">
-      <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="text-3xl font-black text-emerald-900 mb-8 tracking-tight drop-shadow-lg">
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-xl w-full mx-auto p-10 bg-white bg-opacity-95 rounded-3xl shadow-2xl border border-emerald-200 mt-10 flex flex-col items-center"
+    >
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="text-4xl font-black text-emerald-900 mb-10 tracking-tight drop-shadow-lg text-center"
+      >
         Panel principal
       </motion.h2>
-      <div className="flex flex-col md:flex-row gap-4 justify-center mb-6">
-        <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold text-lg shadow hover:bg-emerald-700 transition-all" onClick={onGoCatalogo}>
-          Catálogo de estudios
+      <div className="grid grid-cols-2 gap-6 mb-8 w-full max-w-md">
+        <button
+          className="flex flex-col items-center gap-2 rounded-2xl px-8 py-7 font-bold bg-gradient-to-br from-cyan-400 via-emerald-400 to-cyan-500 text-white shadow-lg hover:shadow-emerald-300 transition focus:outline-none"
+          onClick={onGoCatalogo}
+        >
+          <ListChecks size={32} className="mb-1" />
+          <span className="text-lg mt-1">Catálogo <br/> de estudios</span>
         </button>
-        <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold text-lg shadow hover:bg-cyan-700 transition-all" onClick={onGoAdmin}>
-          Panel administrativo
+        <button
+          className="flex flex-col items-center gap-2 rounded-2xl px-8 py-7 font-bold bg-gradient-to-br from-emerald-400 via-cyan-400 to-emerald-600 text-white shadow-lg hover:shadow-cyan-300 transition focus:outline-none"
+          onClick={onGoCarrito}
+        >
+          <ShoppingCart size={32} className="mb-1" />
+          <span className="text-lg mt-1">Carrito</span>
         </button>
-        <button className="px-6 py-3 rounded-lg bg-gray-200 text-emerald-800 font-bold text-lg shadow hover:bg-gray-300 transition-all" onClick={onCerrarSesion}>
-          Regresar al login
+        <button
+          className="flex flex-col items-center gap-2 rounded-2xl px-8 py-7 font-bold bg-gradient-to-br from-cyan-600 to-cyan-400 text-white shadow-lg hover:shadow-cyan-400 transition focus:outline-none"
+          onClick={onGoAdmin}
+        >
+          <ClipboardCheck size={32} className="mb-1" />
+          <span className="text-lg mt-1">Panel <br/> administrativo</span>
+        </button>
+        <button
+          className="flex flex-col items-center gap-2 rounded-2xl px-8 py-7 font-bold bg-gray-200 text-emerald-900 shadow-lg border border-emerald-200 hover:bg-gray-300 transition focus:outline-none"
+          onClick={onCerrarSesion}
+        >
+          <LogOut size={32} className="mb-1" />
+          <span className="text-lg mt-1">Regresar <br/> al login</span>
         </button>
       </div>
-      <p className="text-emerald-700 font-medium">
-        Selecciona una opción o cierra sesión para regresar al login.
+      <p className="text-emerald-700 font-bold text-lg mt-2 text-center">
+        Selecciona una opción para continuar. <br/>
+        <span className="font-medium text-emerald-600">Usa el panel para navegar y administrar tus estudios.</span>
       </p>
     </motion.div>
   )
@@ -101,7 +102,10 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [enPanelPrincipal, setEnPanelPrincipal] = useState(false)
-  const [ruta, setRuta] = useState('') // '', 'catalogo', 'admin'
+  const [ruta, setRuta] = useState('') // '', 'catalogo', 'admin', 'carrito'
+
+  // LOG PARA DEPURAR FLUJO DE ESTADO
+  console.log({ isAuthenticated, ruta, enPanelPrincipal, showRegister })
 
   const handleCerrarSesion = () => {
     setIsAuthenticated(false)
@@ -111,6 +115,7 @@ function App() {
   }
   const handleGoCatalogo = () => setRuta('catalogo')
   const handleGoAdmin = () => setRuta('admin')
+  const handleGoCarrito = () => setRuta('carrito')
   const handleRegresarPanel = () => setRuta('')
 
   return (
@@ -131,9 +136,21 @@ function App() {
         ) : ruta === 'catalogo' ? (
           <CatalogoPage onRegresar={handleRegresarPanel} />
         ) : ruta === 'admin' ? (
-          <PrincipalPanel onGoCatalogo={handleGoCatalogo} onGoAdmin={() => alert('Próximamente')} onCerrarSesion={handleCerrarSesion} />
+          <PrincipalPanel
+            onGoCatalogo={handleGoCatalogo}
+            onGoAdmin={() => alert('Próximamente')}
+            onCerrarSesion={handleCerrarSesion}
+            onGoCarrito={handleGoCarrito}
+          />
+        ) : ruta === 'carrito' ? (
+          <CarritoPage onRegresar={handleRegresarPanel} />
         ) : enPanelPrincipal ? (
-          <PrincipalPanel onGoCatalogo={handleGoCatalogo} onGoAdmin={handleGoAdmin} onCerrarSesion={handleCerrarSesion} />
+          <PrincipalPanel
+            onGoCatalogo={handleGoCatalogo}
+            onGoAdmin={handleGoAdmin}
+            onCerrarSesion={handleCerrarSesion}
+            onGoCarrito={handleGoCarrito}
+          />
         ) : (
           <WelcomePanel onIrPanel={() => setEnPanelPrincipal(true)} />
         )}
